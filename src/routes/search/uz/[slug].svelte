@@ -32,17 +32,23 @@
 </svelte:head>
 
 <main>
-	<h1><a href="/">Uzbek-English Dictionary</a></h1>
+	<h1><a class="title" href="/">Uzbek-English Dictionary</a></h1>
 	<Search search_term={not_found ? "" : result.uzbek_word} results={results} />
 	{#if not_found}
-	<h1 class="error">No results.</h1>
+		<h1 class="error">No results.</h1>
 	{:else}
-	<h2>{result.uzbek_word}</h2>
-	{#each result.grammatical_forms as form, i}
-		<div>
-			<h4>{form}</h4><h3>{result.english_definition[i]}</h3>
-		</div>
-	{/each}
+		<h2>{result.uzbek_word}</h2>
+			{#each result.grammatical_forms as form, i}
+				<div>
+					<h4>{form}</h4><h3>{result.english_definition[i]}</h3>
+				</div>
+			{/each}
+		<h2 class="related">Similar words</h2>
+		<span>
+			{#each data.related_words as related, i}
+				<a class="related-item" href={related.href}>{related.item}</a>
+			{/each}
+		</span>
 	{/if}
 </main>
 
@@ -100,8 +106,24 @@
 		padding-left: 0.5rem;
 	}
 
-	a {
+	a.title {
 		text-decoration: none;
 		color: black;
+	}
+
+	a.related-item {
+		padding: 0rem 0.4rem;
+	}
+
+	h2.related {
+		font-weight: 500;
+		font-size: 1rem;
+		margin-top: 2rem;
+	}
+	span {
+		display: flex;
+		width: 100%;
+		max-width: var(--max-width);
+
 	}
 </style>
