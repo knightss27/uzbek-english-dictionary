@@ -1,3 +1,5 @@
+// DOES NOT WORK WITH EXPORT
+
 import dictionary from '../../_dictionary.js';
 import Fuse from 'fuse.js';
 
@@ -31,7 +33,7 @@ export function get(req, res, next) {
 		});
 
 		let related_words = results.slice(0, 10).map(result => {
-			result.href = `/search/uz/${result.item}`;
+			result.href = `/search/uz?word=${result.item}`;
 			return result;
 		})
 
@@ -43,7 +45,7 @@ export function get(req, res, next) {
 
 		res.end(JSON.stringify(data));
 	} else {
-		res.writeHead(404, {
+		res.writeHead(200, {
 			'Content-Type': 'application/json'
 		});
 

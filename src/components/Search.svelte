@@ -68,7 +68,7 @@
 
     const handleSearchButton = () => {
         if (search_term) {
-            window.location.href = `/search/uz/${search_term}`
+            window.location.href = `/search/uz?word=${search_term}`
         }
     }
 </script>
@@ -84,7 +84,7 @@
 	<div>
 		{#each results as result, i}
 			{#if i < 10}
-			<a href={`/search/uz/${result.item}`} id="result-{i+1}">{result.item}</a>
+			<a href={`/search/uz?word=${result.item}`} id="result-{i+1}">{result.item}</a>
 			{/if}
 		{/each}
 		<span>

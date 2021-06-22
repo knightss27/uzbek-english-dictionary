@@ -1,11 +1,55 @@
-<script context="module">
-	export async function preload(page, session) {
-		// the `slug` parameter is available because this file
-		// is called [slug].svelte
-		const { slug } = page.params;
+<script context="module" lang="ts">
+	import dictionary from "../../_dictionary";
+	import Fuse from "fuse.js";
 
-		const res = await this.fetch(`search/uz/${slug}.json`);
-		const data = await res.json();
+	export async function preload(page, session) {
+		// Sneaky tricks to let `sapper export` work properly
+		const { word } = page.query;
+		const slug = word;
+		let data = {};
+
+		if (!slug) {
+			data = {
+				message: `Not found.`
+			}
+			return {data}
+		}
+
+		const prefixes = ["ba", "be", "fi"];
+
+		const options = Object.keys(dictionary);
+		const fuse = new Fuse(options, {})
+
+		let results: any[] = fuse.search(slug);
+		results = results.filter(r => {
+			if (r.item.indexOf(slug) == 0 && r.item !== slug) {
+				return true;
+			}
+
+			const prefix = r.item.substring(0, 2);
+			if (prefixes.includes(prefix) && r.item.indexOf(slug) !== -1) {
+				return true;
+			}
+
+			return false;
+		})
+
+		if (dictionary[slug]) {
+			let related_words = results.slice(0, 10).map(result => {
+				result.href = `/search/uz?word=${result.item}`;
+				return result;
+			})
+
+			data = {
+				word: slug,
+				word_info: dictionary[slug],
+				related_words,
+			}
+		} else {
+			data = {
+				message: `Not found.`
+			}
+		}
 
 		return { data };
 	}
@@ -120,6 +164,7 @@
 		font-size: 1rem;
 		margin-top: 2rem;
 	}
+	
 	span {
 		display: flex;
 		width: 100%;

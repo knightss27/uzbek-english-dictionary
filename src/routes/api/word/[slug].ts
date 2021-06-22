@@ -1,3 +1,5 @@
+// DOES NOT WORK WITH EXPORT
+
 import dictionary from '../../_dictionary.js';
 
 export function get(req, res, next) {
@@ -12,7 +14,7 @@ export function get(req, res, next) {
 
 		res.end(JSON.stringify(dictionary[slug]));
 	} else {
-		res.writeHead(404, {
+		res.writeHead(200, {
 			'Content-Type': 'application/json'
 		});
 

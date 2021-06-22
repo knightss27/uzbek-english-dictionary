@@ -13,6 +13,9 @@
 	<Search />
 </main>
 
+<a hidden href="/search/uz">Uzbek Search</a>
+<!-- <a hidden href="/api/word/test.json">Uzbek Search API</a> -->
+
 <style>
 	main {
 		display: flex;
