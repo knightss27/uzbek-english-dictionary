@@ -9,9 +9,7 @@ export function get(req, res, next) {
 	const { slug } = req.params;
 
     const options = Object.keys(dictionary);
-    const fuse = new Fuse(options, {
-        includeScore: true,
-    })
+    const fuse = new Fuse(options, {})
 
     let results = fuse.search(slug);
 	results = results.filter(r => {
