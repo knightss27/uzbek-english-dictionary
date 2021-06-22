@@ -164,11 +164,11 @@
 		font-size: 1rem;
 		margin-top: 2rem;
 	}
-	
+
 	span {
 		display: flex;
 		width: 100%;
 		max-width: var(--max-width);
-
+		flex-wrap: wrap;
 	}
 </style>

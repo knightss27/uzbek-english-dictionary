@@ -1,6 +1,7 @@
 <script>
 	import dictionary from "../routes/_dictionary";
 	import Fuse from "fuse.js";
+	import { goto } from '@sapper/app';
 
 	const search_options = Object.keys(dictionary);
 	const fuse = new Fuse(search_options, {
@@ -37,10 +38,12 @@
 			console.log("fuzzy searching for: " + search_term);
 			cursor = 0;
 
-			results = fuse.search(search_term);
+			let normalized_term = search_term.toLowerCase();
+
+			results = fuse.search(normalized_term);
 
 			results = results.filter(r => {
-				if (r.item.indexOf(search_term) == 0) {
+				if (r.item.indexOf(normalized_term) == 0) {
 					return true;
 				}
 
@@ -68,7 +71,7 @@
 
     const handleSearchButton = () => {
         if (search_term) {
-            window.location.href = `/search/uz?word=${search_term}`
+            goto(`/search/uz?word=${search_term.toLowerCase()}`)
         }
     }
 </script>
@@ -77,7 +80,7 @@
 
 <main>
 	<form on:submit|preventDefault={handleSearchButton}>
-		<input autocomplete="off" bind:value={search_term} on:input={handleSearch} placeholder="s'oz" id="result-0" />
+		<input autocomplete="off" bind:value={search_term} on:input={handleSearch} placeholder="so'z" id="result-0" />
 		<button type="submit">search</button>
 	</form>
 	{#if results.length > 0}
