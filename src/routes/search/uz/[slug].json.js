@@ -20,7 +20,7 @@ export function get(req, res, next) {
 		}
 
 		const prefix = r.item.substring(0, 2);
-		if (prefixes.includes(prefix)) {
+		if (prefixes.includes(prefix) && r.item.indexOf(slug) !== -1) {
 			return true;
 		}
 
