@@ -6,69 +6,38 @@
 		// Sneaky tricks to let `sapper export` work properly
 		const { word } = page.query;
 		const slug = word;
-		let data = {};
+		
+		const res = await this.fetch(`api/search/uz?word=${slug}`);
+		const data = await res.json();
 
-		if (!slug) {
-			data = {
-				message: `Not found.`
-			}
-			return {data}
+		let not_found = true;
+		if (!data.message) {
+			not_found = false;
 		}
 
-		const prefixes = ["ba", "be", "fi"];
-
-		const options = Object.keys(dictionary);
-		const fuse = new Fuse(options, {})
-
-		let results: any[] = fuse.search(slug);
-		results = results.filter(r => {
-			if (r.item.indexOf(slug) == 0 && r.item !== slug) {
-				return true;
-			}
-
-			const prefix = r.item.substring(0, 2);
-			if (prefixes.includes(prefix) && r.item.indexOf(slug) !== -1) {
-				return true;
-			}
-
-			return false;
-		})
-
-		if (dictionary[slug]) {
-			let related_words = results.slice(0, 10).map(result => {
-				result.href = `/search/uz?word=${result.item}`;
-				return result;
-			})
-
-			data = {
-				word: slug,
-				word_info: dictionary[slug],
-				related_words,
-			}
-		} else {
-			data = {
-				message: `Not found.`
-			}
-		}
-
-		return { data };
+		return { data, not_found };
 	}
 </script>
 
 <script lang="ts">
 	export let data: SearchResult;
+	export let not_found: boolean;
 	import Search from "../../../components/Search.svelte";
+
+	import { stores } from "@sapper/app";
+
+	const { page } = stores();
+	const { word } = $page.query;
+
+	// console.log(data, not_found);
+
 	let results = [];
-	let not_found = false;
 
 	$: result = data.word_info;
 	$: if (data) {
 		results = [];
 	}
 
-	if (data.message) {
-		not_found = true;
-	}
 </script>
 
 <svelte:head>

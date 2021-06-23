@@ -55,7 +55,7 @@
 				return false;
 			})
 
-			console.log(results);
+			// console.log(results);
 
 			if (results.length == 0) {
 				bottom_text = "No results."
@@ -71,7 +71,7 @@
 
     const handleSearchButton = () => {
         if (search_term) {
-            goto(`/search/uz?word=${search_term.toLowerCase()}`)
+            window.location.href = `/search/uz?word=${search_term.toLowerCase()}`
         }
     }
 </script>
@@ -87,7 +87,7 @@
 	<div>
 		{#each results as result, i}
 			{#if i < 10}
-			<a href={`/search/uz?word=${result.item}`} id="result-{i+1}">{result.item}</a>
+			<a rel="prefetch" href={`/search/uz?word=${result.item}`} id="result-{i+1}">{result.item}</a>
 			{/if}
 		{/each}
 		<span>
