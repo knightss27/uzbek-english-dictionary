@@ -6,6 +6,6 @@ This site is meant to continue [Herve-Guerin's Uzbek-Glossary](https://github.co
 
 This site parses Guerin's existing HTML files into an accessible API, and provides fuzzy search capabilities to explore Uzbek-English translation.
 
-Additionally, this site shows search results from the University of Indiana's [CTILD Uzbek-English Dictionary](https://ctild.sitehost.iu.edu/Main/Uzbek-EnglishDictionary), which is by far one of the more extensive resources for Uzbek-English translation that exists on the web.
+Additionally, this site shows search results from the Indiana University's [CTILD Uzbek-English Dictionary](https://ctild.sitehost.iu.edu/Main/Uzbek-EnglishDictionary), which is by far one of the more extensive resources for Uzbek-English translation that exists on the web.
 
 All translations are the work of their respective owners.
