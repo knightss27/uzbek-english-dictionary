@@ -110,7 +110,7 @@
 
 	form {
 		display: flex;
-		width: 95%;
+		width: 100%;
 		max-width: var(--max-width);
 	}
 
@@ -137,7 +137,8 @@
     }
 
 	div {
-		width: var(--max-width);
+		width: 95%;
+		max-width: var(--max-width);
 		display: flex;
 		flex-direction: column;
 		padding-top: 0.5rem;
@@ -152,7 +153,7 @@
 		padding-left: 0.25rem;
 		border: 1px solid lightgray;
 		border-radius: 0.25rem;
-		width: calc(100% - 50px);
+		width: 100%;
 		transition: ease box-shadow 0.3s;
         background-color: white;
         height: 2.5rem;
@@ -168,7 +169,7 @@
 	}
 
 	span {
-		width: calc(100% - 50px);
+		width: 100%;
 		border-radius: 0.25rem;
 		background-color: #ccc;
 		text-align: center;

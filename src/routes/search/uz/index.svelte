@@ -56,8 +56,17 @@
 					<h4>{form}</h4><h3>{result.english_definition[i]}</h3>
 				</div>
 			{/each}
+		<h2 class="example">Examples</h2>
+		<span class="examples">
+			{#each result.examples as example}
+				<span>
+					<h5 class="uz">{example.uzbek}</h5>
+					<h5 class="en">{example.english}</h5>
+				</span>
+			{/each}
+		</span>
 		<h2 class="related">Similar words</h2>
-		<span>
+		<span class="related-items">
 			{#each data.related_words as related, i}
 				<a class="related-item" href={related.href}>{related.item}</a>
 			{/each}
@@ -68,7 +77,8 @@
 <style>
 	main {
 		display: flex;
-		width: 100%;
+		width: 95%;
+		margin: 0 auto;
 		height: 100%;
 		align-items: center;
 		justify-content: center;
@@ -97,17 +107,17 @@
 		margin: 0px;
 	}
 
+	h3 {
+		font-size: 1.5rem;
+		padding-left: 1rem;
+		line-height: 1;
+	}
+
 	h4 {
 		font-weight: 300;
 		font-style: italic;
 		font-size: 1.25rem;
 		padding-top: 0.5rem;
-	}
-
-	h3 {
-		font-size: 1.5rem;
-		padding-left: 1rem;
-		line-height: 1;
 	}
 
 	div {
@@ -128,16 +138,45 @@
 		padding: 0rem 0.4rem;
 	}
 
-	h2.related {
+	h2.related, h2.example {
 		font-weight: 500;
 		font-size: 1rem;
 		margin-top: 2rem;
 	}
 
-	span {
+	span.related-items {
 		display: flex;
 		width: 100%;
 		max-width: var(--max-width);
 		flex-wrap: wrap;
+	}
+
+	span.examples {
+		display: flex;
+		width: 100%;
+		max-width: var(--max-width);
+		flex-direction: column;
+	}
+
+	span.examples span {
+		display: flex;
+		flex-direction: column;
+	}
+
+	h5 {
+		margin: 0rem;
+		font-size: 1rem;
+		padding-left: 1rem;
+	}
+
+	h5.uz {
+		font-size: 1.4rem;
+	}
+
+	h5.en {
+		font-weight: 300;
+		font-style: italic;
+		padding-left: 2rem;
+		font-size: 1.15rem;
 	}
 </style>
