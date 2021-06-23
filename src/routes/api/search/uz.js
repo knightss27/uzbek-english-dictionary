@@ -7,7 +7,7 @@ const prefixes = ["ba", "be", "fi"];
 
 export function get(req, res, next) {
 	const word = req.query.word;
-    const slug = word;
+    let slug = word;
 
     const options = Object.keys(dictionary);
     const fuse = new Fuse(options, {})
@@ -17,9 +17,13 @@ export function get(req, res, next) {
 			'Content-Type': 'application/json'
 		});
 
+        if (slug.includes("-")) {
+            slug = slug.replace("-", "");
+        }
+
         let results = fuse.search(slug);
         results = results.filter(r => {
-            if (r.item.indexOf(slug) == 0 && r.item !== slug) {
+            if (r.item.indexOf(slug) == 0 && r.item !== word) {
                 return true;
             }
     
@@ -37,8 +41,8 @@ export function get(req, res, next) {
 		})
 
 		const data = {
-			word: slug,
-			word_info: dictionary[slug],
+			word: word,
+			word_info: dictionary[word],
 			related_words,
 		}
 
