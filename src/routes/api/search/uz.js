@@ -2,21 +2,78 @@
 
 import dictionary from '../../_dictionary.js';
 import Fuse from 'fuse.js';
+import axios from "axios";
+import FormData from "form-data";
+import cheerio from "cheerio";
 
 const prefixes = ["ba", "be", "fi"];
 
-export function get(req, res, next) {
+export async function get(req, res, next) {
 	const word = req.query.word;
     let slug = word;
 
     const options = Object.keys(dictionary);
     const fuse = new Fuse(options, {})
 
-	if (word && dictionary[slug]) {
+	if (word) {
 		res.writeHead(200, {
 			'Content-Type': 'application/json'
 		});
 
+		const data = {
+			word: word,
+			word_info: dictionary[word] ? dictionary[word] : null,
+			related_words: [],
+            ctild_data: null,
+		}
+
+        let formData = new FormData();
+		formData.append("do", "search");
+		formData.append("search", word);
+
+		const form_res = await axios.post(`https://ctild.sitehost.iu.edu/dict/ajax.php`, formData, {
+            headers: formData.getHeaders()
+        })
+		
+        if (form_res.data != "-2" && form_res.data != "-1") {
+            data.ctild_data = {};
+            // console.log(form_res.data)
+            const $ = cheerio.load(form_res.data);
+            data.ctild_data.uzbek_word = $('div.headword').text();
+            data.ctild_data.part_of_speech = $('span.pos').text();
+            
+            data.ctild_data.english_definitions = [];
+            $('a.gloss').each((i, el) => {
+                let text = $(el).text();
+                if (text.includes(")")) {
+                    text = text.split(")")[1];
+                }
+                data.ctild_data.english_definitions.push(
+                    {
+                        definition: text,
+                        examples: [],
+                    }
+                )
+            })
+
+            $('div.examples').each((i, el) => {
+                $('div.example', $(el).html()).each((j, ex) => {
+                    data.ctild_data.english_definitions[i].examples.push({
+                        uzbek: $('span.uz', $(ex).html()).text(),
+                        english: $('span.en', $(ex).html()).text(),
+                    })
+                })
+            })
+        }
+
+        if (data.word_info == undefined && !data.ctild_data) {
+            res.end(JSON.stringify({
+                message: `Not found`
+            }));
+            return;
+        }
+
+        
         if (slug.includes("-")) {
             slug = slug.replace("-", "");
         }
@@ -35,17 +92,12 @@ export function get(req, res, next) {
             return false;
         })
 
-		let related_words = results.slice(0, 10).map(result => {
+		data.related_words = results.slice(0, 10).map(result => {
 			result.href = `/search/uz?word=${result.item}`;
 			return result;
 		})
 
-		const data = {
-			word: word,
-			word_info: dictionary[word],
-			related_words,
-		}
-
+        // console.log(data);
 		res.end(JSON.stringify(data));
 	} else {
 		res.writeHead(200, {

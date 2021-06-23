@@ -1,7 +1,4 @@
 <script context="module" lang="ts">
-	import dictionary from "../../_dictionary";
-	import Fuse from "fuse.js";
-
 	export async function preload(page, session) {
 		// Sneaky tricks to let `sapper export` work properly
 		const { word } = page.query;
@@ -24,11 +21,6 @@
 	export let not_found: boolean;
 	import Search from "../../../components/Search.svelte";
 
-	import { stores } from "@sapper/app";
-
-	const { page } = stores();
-	const { word } = $page.query;
-
 	// console.log(data, not_found);
 
 	let results = [];
@@ -37,7 +29,6 @@
 	$: if (data) {
 		results = [];
 	}
-
 </script>
 
 <svelte:head>
@@ -46,25 +37,41 @@
 
 <main>
 	<h1><a class="title" href="/">Uzbek-English Dictionary</a></h1>
-	<Search search_term={not_found ? "" : result.uzbek_word} results={results} />
+	<Search search_term={data.word} results={results} />
 	{#if not_found}
 		<h1 class="error">No results.</h1>
 	{:else}
-		<h2>{result.uzbek_word}</h2>
-			{#each result.grammatical_forms as form, i}
-				<div>
-					<h4>{form}</h4><h3>{result.english_definition[i]}</h3>
+		<h2>{data.word}</h2>
+			{#if data.word_info}
+				{#each data.word_info.grammatical_forms as form, i}
+					<div>
+						<h4>{form}</h4><h3>{data.word_info.english_definition[i]}</h3>
+					</div>
+				{/each}
+				<a class="source" href="https://github.com/Herve-Guerin/uzbek-glossary" target="_blank">Hervé Guérin's Uzbek Glossary</a>
+			{/if}
+			{#if data.ctild_data}
+				<div class="ctild">
+					<h4>{data.ctild_data.part_of_speech}</h4>
 				</div>
-			{/each}
+				{#each data.ctild_data.english_definitions as def, i}
+					<div>
+						<h3>{def.definition}</h3>
+					</div>
+				{/each}
+				<a class="source" href="https://ctild.indiana.edu/Main/Uzbek-EnglishDictionary" target="_blank">CTILD Uzbek-English Dictionary</a>
+			{/if}
 		<h2 class="example">Examples</h2>
-		<span class="examples">
-			{#each result.examples as example}
-				<span>
-					<h5 class="uz">{example.uzbek}</h5>
-					<h5 class="en">{example.english}</h5>
-				</span>
-			{/each}
-		</span>
+		{#if data.word_info}
+			<span class="examples">
+				{#each data.word_info.examples as example}
+					<span>
+						<h5 class="uz">{example.uzbek}</h5>
+						<h5 class="en">{example.english}</h5>
+					</span>
+				{/each}
+			</span>
+		{/if}
 		<h2 class="related">Similar words</h2>
 		<span class="related-items">
 			{#each data.related_words as related, i}
@@ -86,6 +93,7 @@
 		position: relative;
 		top: 0;
 		z-index: 1;
+		max-width: var(--max-width);
 	}
 
 	h1.error {
@@ -161,6 +169,11 @@
 	span.examples span {
 		display: flex;
 		flex-direction: column;
+		padding-bottom: 1rem;
+	}
+
+	span.examples span:last-child {
+		padding-bottom: 0rem;
 	}
 
 	h5 {
@@ -178,5 +191,15 @@
 		font-style: italic;
 		padding-left: 2rem;
 		font-size: 1.15rem;
+	}
+
+	a.source {
+		padding: 1rem;
+		width: 100%;
+		text-align: right;
+	}
+
+	div.ctild {
+		border-top: 1px solid #ccc;
 	}
 </style>

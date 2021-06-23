@@ -7,6 +7,7 @@ type SearchResult = {
         href: string,
     }[],
     message?: string,
+    ctild_data: CTILDInfo,
 }
 
 type WordInfo = {
@@ -19,4 +20,16 @@ type WordInfo = {
         english: string,
     }[],
     section: string,
+}
+
+type CTILDInfo = {
+    uzbek_word: string,
+    part_of_speech: string,
+    english_definitions: {
+        definition: string,
+        examples: {
+            uzbek: string,
+            english: string,
+        }[]
+    }[],
 }
