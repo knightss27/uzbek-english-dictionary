@@ -29,6 +29,20 @@
 	$: if (data) {
 		results = [];
 	}
+
+	const gram_categories = [
+		"ad",
+		"adj",
+		"adv",
+		"n",
+		"num",
+		"post",
+		"pron",
+		"v.int",
+		"v.t",
+		"meas",
+		"neg"
+	]
 </script>
 
 <svelte:head>
@@ -45,18 +59,19 @@
 			{#if data.word_info}
 				{#each data.word_info.grammatical_forms as form, i}
 					<div>
-						<h4>{form}</h4><h3>{data.word_info.english_definition[i]}</h3>
+						<h4><i>{form.includes("|") ? form.split("|")[0] : (gram_categories.includes(form) ? form : "")}</i>{form.includes("|") ? " | " + form.split("|")[1] : ""}</h4>
+						<h3>{data.word_info.english_definition[i]}</h3>
 					</div>
 				{/each}
 				<a class="source" href="https://github.com/Herve-Guerin/uzbek-glossary" target="_blank">Hervé Guérin's Uzbek Glossary</a>
 			{/if}
 			{#if data.ctild_data}
 				<div class="ctild">
-					<h4>{data.ctild_data.part_of_speech}</h4>
+					<h4><i>{data.ctild_data.part_of_speech}</i></h4>
 				</div>
 				{#each data.ctild_data.english_definitions as def, i}
 					<div>
-						<h3>{def.definition}</h3>
+						<h3><i>{i+1}. </i>{def.definition}</h3>
 					</div>
 				{/each}
 				<a class="source" href="https://ctild.indiana.edu/Main/Uzbek-EnglishDictionary" target="_blank">CTILD Uzbek-English Dictionary</a>
@@ -70,6 +85,9 @@
 						<h5 class="en">{example.english}</h5>
 					</span>
 				{/each}
+				{#if data.word_info.examples.length == 0}
+					<span style="text-align: center;">No examples.</span>
+				{/if}
 			</span>
 		{/if}
 		<h2 class="related">Similar words</h2>
@@ -94,6 +112,7 @@
 		top: 0;
 		z-index: 1;
 		max-width: var(--max-width);
+		padding-bottom: 10rem;
 	}
 
 	h1.error {
@@ -116,16 +135,14 @@
 	}
 
 	h3 {
-		font-size: 1.5rem;
+		font-size: 1.25rem;
 		padding-left: 1rem;
 		line-height: 1;
 	}
 
 	h4 {
 		font-weight: 300;
-		font-style: italic;
 		font-size: 1.25rem;
-		padding-top: 0.5rem;
 	}
 
 	div {
@@ -135,6 +152,7 @@
 		width: 100%;
 		max-width: var(--max-width);
 		padding-left: 0.5rem;
+		padding-top: 0.5rem;
 	}
 
 	a.title {
@@ -201,5 +219,10 @@
 
 	div.ctild {
 		border-top: 1px solid #ccc;
+	}
+
+	h3 i {
+		font-size: 1.25rem;
+		font-weight: 600;
 	}
 </style>

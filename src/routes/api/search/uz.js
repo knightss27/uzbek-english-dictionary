@@ -46,7 +46,7 @@ export async function get(req, res, next) {
             $('a.gloss').each((i, el) => {
                 let text = $(el).text();
                 if (text.includes(")")) {
-                    text = text.split(")")[1];
+                    text = text.substring(text.indexOf(")")+1);
                 }
                 data.ctild_data.english_definitions.push(
                     {
