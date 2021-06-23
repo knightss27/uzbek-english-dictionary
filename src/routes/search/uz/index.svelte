@@ -220,6 +220,10 @@
 	h5.ctild {
 		font-size: 1rem;
 		padding-left: 2rem;
+		display: flex;
+		flex-wrap: nowrap;
+		overflow: visible;
+		white-space: nowrap;
 	}
 
 	span.ctild {
