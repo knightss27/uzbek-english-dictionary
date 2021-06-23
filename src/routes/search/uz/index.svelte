@@ -72,6 +72,12 @@
 				{#each data.ctild_data.english_definitions as def, i}
 					<div>
 						<h3><i>{i+1}. </i>{def.definition}</h3>
+						{#each def.examples as example}
+							<span class="ctild">
+								<h5 class="ctild uz">{example.uzbek}</h5>
+								<h5 class="ctild en">{example.english}</h5>
+							</span>
+						{/each}
 					</div>
 				{/each}
 				<a class="source" href="https://ctild.indiana.edu/Main/Uzbek-EnglishDictionary" target="_blank">CTILD Uzbek-English Dictionary</a>
@@ -209,6 +215,21 @@
 		font-style: italic;
 		padding-left: 2rem;
 		font-size: 1.15rem;
+	}
+
+	h5.ctild {
+		font-size: 1rem;
+		padding-left: 2rem;
+	}
+
+	span.ctild {
+		display: flex;
+		flex-direction: row;
+		padding-left: 1rem;
+	}
+
+	span.ctild .uz {
+		font-weight: 600;
 	}
 
 	a.source {
