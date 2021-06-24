@@ -57,10 +57,10 @@
 	{:else}
 		<h2>{data.word}</h2>
 			{#if data.word_info}
-				{#each data.word_info.grammatical_forms as form, i}
+				{#each data.word_info.english_definitions as def, i}
 					<div>
-						<h4><i>{form.includes("|") ? form.split("|")[0] : (gram_categories.includes(form) ? form : "")}</i>{form.includes("|") ? " | " + form.split("|")[1] : ""}</h4>
-						<h3>{data.word_info.english_definition[i]}</h3>
+						<h4><i>{def.form.includes("|") ? def.form.split("|")[0] : (gram_categories.includes(def.form) ? def.form : "")}</i>{def.form.includes("|") ? " | " + def.form.split("|")[1] : (gram_categories.includes(def.form) ? "" : def.form)}</h4>
+						<h3>{def.definition}</h3>
 					</div>
 				{/each}
 				<a class="source" href="https://github.com/Herve-Guerin/uzbek-glossary" target="_blank">Hervé Guérin's Uzbek Glossary</a>

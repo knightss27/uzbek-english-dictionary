@@ -13,8 +13,10 @@ type SearchResult = {
 type WordInfo = {
     uzbek_word: string,
     grammatical_categories: string[],
-    grammatical_forms: string[],
-    english_definition: string[],
+    english_definitions: {
+        definition: string,
+        form: string,
+    }[],
     examples: {
         uzbek: string,
         english: string,
