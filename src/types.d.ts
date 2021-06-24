@@ -12,6 +12,7 @@ type SearchResult = {
 
 type WordInfo = {
     uzbek_word: string,
+    cyrillic_suggestion: string,
     grammatical_categories: string[],
     english_definitions: {
         definition: string,

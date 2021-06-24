@@ -55,7 +55,7 @@
 	{#if not_found}
 		<h1 class="error">No results.</h1>
 	{:else}
-		<h2>{data.word}</h2>
+		<h2>{data.word}<p>{@html data.word_info.cyrillic_suggestion}</p></h2>
 			{#if data.word_info}
 				{#each data.word_info.english_definitions as def, i}
 					<div>
@@ -93,6 +93,8 @@
 				{/each}
 				{#if data.word_info.examples.length == 0}
 					<span style="text-align: center;">No examples.</span>
+				{:else}
+				<a class="source" href="https://github.com/Herve-Guerin/uzbek-glossary" target="_blank">Hervé Guérin's Uzbek Glossary</a>
 				{/if}
 			</span>
 		{/if}
@@ -159,6 +161,18 @@
 		max-width: var(--max-width);
 		padding-left: 0.5rem;
 		padding-top: 0.5rem;
+	}
+
+	h2 p {
+		margin: 0px;
+		padding-left: 1rem;
+		margin-left: 1rem;
+		font-weight: 500;
+		font-size: 1.25rem;
+		line-height: 1;
+		display: flex;
+		align-items: center;
+		border-left: 1px solid gray;
 	}
 
 	a.title {

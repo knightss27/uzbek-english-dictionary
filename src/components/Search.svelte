@@ -87,7 +87,7 @@
 	<div>
 		{#each results as result, i}
 			{#if i < 10}
-			<a rel="prefetch" href={`/search/uz?word=${result.item}`} id="result-{i+1}">{result.item}</a>
+			<a on:click={() => {results = []}} href={`/search/uz?word=${result.item}`} id="result-{i+1}">{result.item}</a>
 			{/if}
 		{/each}
 		<span>
