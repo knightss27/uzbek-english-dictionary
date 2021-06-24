@@ -3,11 +3,12 @@
 	import Fuse from "fuse.js";
 	import { goto } from '@sapper/app';
 
-	const search_options = Object.keys(dictionary);
+	const search_options = Object.values(dictionary);
 	const fuse = new Fuse(search_options, {
 		threshold: 0.2,
 		includeScore: true,
 		findAllMatches: true,
+		keys: ['uzbek_word', 'cyrillic_suggestion']
 	})
 
 	// Persian prefixes (sometimes used)
@@ -41,13 +42,14 @@
 			let normalized_term = search_term.toLowerCase();
 
 			results = fuse.search(normalized_term);
+			console.log(results);
 
 			results = results.filter(r => {
-				if (r.item.indexOf(normalized_term) == 0) {
+				if (r.item.uzbek_word.indexOf(normalized_term) == 0) {
 					return true;
 				}
 
-				const prefix = r.item.substring(0, 2);
+				const prefix = r.item.uzbek_word.substring(0, 2);
 				if (prefixes.includes(prefix)) {
 					return true;
 				}
@@ -87,7 +89,7 @@
 	<div>
 		{#each results as result, i}
 			{#if i < 10}
-			<a on:click={() => {results = []}} href={`/search/uz?word=${result.item}`} id="result-{i+1}">{result.item}</a>
+			<a on:click={() => {results = []}} href={`/search/uz?word=${result.item.uzbek_word}`} id="result-{i+1}">{result.item.uzbek_word}</a>
 			{/if}
 		{/each}
 		<span>

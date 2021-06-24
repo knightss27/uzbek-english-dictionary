@@ -63,7 +63,10 @@
 						<h3>{def.definition}</h3>
 					</div>
 				{/each}
-				<a class="source" href="https://github.com/Herve-Guerin/uzbek-glossary" target="_blank">Hervé Guérin's Uzbek Glossary</a>
+				<div class="with-key">
+					<a class="source" href="/key" target="_blank">Abbreviation Key</a>
+					<a class="source" href="https://github.com/Herve-Guerin/uzbek-glossary" target="_blank">Hervé Guérin's Uzbek Glossary</a>
+				</div>
 			{/if}
 			{#if data.ctild_data}
 				<div class="ctild">
@@ -263,5 +266,22 @@
 	h3 i {
 		font-size: 1.25rem;
 		font-weight: 600;
+	}
+
+	div.with-key {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		justify-content: space-between;
+		padding: 1rem;
+	}
+
+	div.with-key a {
+		display: flex;
+		padding: 0px;
+	}
+
+	div.with-key :last-child {
+		justify-content: flex-end;
 	}
 </style>
