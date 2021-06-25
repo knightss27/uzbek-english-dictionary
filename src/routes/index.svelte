@@ -9,7 +9,6 @@
 </svelte:head>
 
 <main>
-	<h1>Uzbek-English Dictionary</h1>
 	<Search />
 </main>
 

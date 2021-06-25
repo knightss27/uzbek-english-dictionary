@@ -80,6 +80,7 @@
 
 <svelte:window on:keydown={handleKeyDown} />
 
+<a class="title" href="/"><img src="logo.png" alt="Uzbek-English Dictionary" /></a>
 <main>
 	<form on:submit|preventDefault={handleSearchButton}>
 		<input autocomplete="off" bind:value={search_term} on:input={handleSearch} placeholder="so'z" id="result-0" />
@@ -89,7 +90,7 @@
 	<div>
 		{#each results as result, i}
 			{#if i < 10}
-			<a on:click={() => {results = []}} href={`/search/uz?word=${result.item.uzbek_word}`} id="result-{i+1}">{result.item.uzbek_word}</a>
+			<a class="result" on:click={() => {results = []}} href={`/search/uz?word=${result.item.uzbek_word}`} id="result-{i+1}">{result.item.uzbek_word}</a>
 			{/if}
 		{/each}
 		<span>
@@ -139,7 +140,7 @@
     }
 
 	div {
-		width: 95%;
+		width: 100%;
 		max-width: var(--max-width);
 		display: flex;
 		flex-direction: column;
@@ -150,7 +151,7 @@
         background-color: white;
 	}
 
-	a {
+	a.result {
 		margin: 0.25rem 0rem;
 		padding-left: 0.25rem;
 		border: 1px solid lightgray;
@@ -162,11 +163,11 @@
         font-size: 1.5rem;
 	}
 
-	a:hover {
+	a.result:hover {
 		box-shadow: 0.25rem 0.25rem 10px #ddd;
 	}
 
-	a:focus {
+	a.result:focus {
 		border: 1px solid blue;
 	}
 
@@ -177,5 +178,15 @@
 		text-align: center;
 		font-size: 0.8rem;
 		padding: 0.25rem 0rem;
+	}
+
+	img {
+		max-width: 95%;
+		padding: 1rem 0rem;
+	}
+
+	a {
+		width: 100%;
+		max-width: var(--max-width);
 	}
 </style>

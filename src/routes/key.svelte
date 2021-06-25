@@ -52,6 +52,8 @@
                 </div>
             {/each}
         </span>
+    </span>
+    <span class="arguments">
         <span>
             <p class="header">Cases:</p>
             {#each cases as c}

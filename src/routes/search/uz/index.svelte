@@ -50,7 +50,6 @@
 </svelte:head>
 
 <main>
-	<h1><a class="title" href="/">Uzbek-English Dictionary</a></h1>
 	<Search search_term={data.word} results={results} />
 	{#if not_found}
 		<h1 class="error">No results.</h1>
