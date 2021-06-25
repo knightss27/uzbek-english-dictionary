@@ -2,13 +2,17 @@
 	import dictionary from "../routes/_dictionary";
 	import Fuse from "fuse.js";
 	import { goto } from '@sapper/app';
+	import he from "he";
 
 	const search_options = Object.values(dictionary);
 	const fuse = new Fuse(search_options, {
 		threshold: 0.2,
 		includeScore: true,
 		findAllMatches: true,
-		keys: ['uzbek_word', 'cyrillic_suggestion']
+		keys: ['uzbek_word', 'cyrillic_suggestion'],
+		getFn: (obj, keys) => {
+			return keys.map(key => he.decode(obj[key]));
+		}
 	})
 
 	// Persian prefixes (sometimes used)
@@ -41,11 +45,13 @@
 
 			let normalized_term = search_term.toLowerCase();
 
+			// console.log(normalized_term);
+
 			results = fuse.search(normalized_term);
-			console.log(results);
+			// console.log(results);
 
 			results = results.filter(r => {
-				if (r.item.uzbek_word.indexOf(normalized_term) == 0) {
+				if (r.item.uzbek_word.indexOf(normalized_term) == 0 || (r.item.cyrillic_suggestion && he.decode(r.item.cyrillic_suggestion).indexOf(normalized_term) == 0)) {
 					return true;
 				}
 

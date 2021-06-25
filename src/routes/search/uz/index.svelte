@@ -54,11 +54,19 @@
 	{#if not_found}
 		<h1 class="error">No results.</h1>
 	{:else}
-		<h2>{data.word}<p>{@html data.word_info.cyrillic_suggestion}</p></h2>
+		<h2>{data.word}
+			{#if data.word_info}
+			<p>
+			{@html data.word_info.cyrillic_suggestion}
+			</p>
+			{/if}
+		</h2>
 			{#if data.word_info}
 				{#each data.word_info.english_definitions as def, i}
 					<div>
+						{#if def.form}
 						<h4><i>{def.form.includes("|") ? def.form.split("|")[0] : (gram_categories.includes(def.form) ? def.form : "")}</i>{def.form.includes("|") ? " | " + def.form.split("|")[1] : (gram_categories.includes(def.form) ? "" : def.form)}</h4>
+						{/if}
 						<h3>{def.definition}</h3>
 					</div>
 				{/each}
