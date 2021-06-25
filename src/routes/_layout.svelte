@@ -7,7 +7,8 @@
 <style>
 	main {
 		position: relative;
-		width: 100%;
+		width: 95%;
+		margin: 0 auto;
 		height: 100%;
 		min-height: 100vh;
 	}
