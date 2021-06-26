@@ -28,6 +28,7 @@ type WordInfo = {
         href: string,
     }[],
     section: string,
+    ctild_data: CTILDInfo
 }
 
 type CTILDInfo = {
