@@ -7,13 +7,15 @@ import { Word, connectToDB } from "../../../_utils";
 
 // Possible prefixes
 const prefixes = ["ba", "be", "fi"];
-const options = Object.keys(dictionary);
-const fuse = new Fuse(options, {});
 
 export async function get(req, res, next) {
 	// Get the word from our url parameters
     const word = req.query.word;
     let slug = word;
+
+    // Creats our fuzzy search object, useful for "similar words" section
+    const options = Object.keys(dictionary);
+    const fuse = new Fuse(options, {})
 
     // If we actually have the parameter
 	if (word) {
@@ -22,15 +24,11 @@ export async function get(req, res, next) {
 			'Content-Type': 'application/json'
 		});
 
-        await connectToDB();
-
-        const word_from_db = await Word.findOne({"uzbek_word": word});
-
         // Initialize the data (SearchResult)
 		const data = {
 			word: word,
-			word_info: word_from_db ? word_from_db : null,
-			related_words: word_from_db ? word_from_db.related_words : [],
+			word_info: dictionary[word] ? dictionary[word] : null,
+			related_words: [],
             ctild_data: null,
 		}
 
@@ -116,38 +114,34 @@ export async function get(req, res, next) {
             return;
         }
 
-        // Now only fuzzy search if we don't already know the term
-        if (data.word_info == undefined && data.ctild_data) {
-            // For fuzzy searching verbs, we don't want the "-"
-            if (slug.includes("-")) {
-                slug = slug.replace("-", "");
-            }
-
-            // Fuzzy search for similar words
-            let results = fuse.search(slug);
-            results = results.filter(r => {
-                // Allow the fuzzy search if the word starts with the same letters
-                // This is useful as prefixes are quite rare in Uzbek
-                if (r.item.indexOf(slug) == 0 && r.item !== word) {
-                    return true;
-                }
-                
-                // Just in case, check whether we have a prefix, if so we keep it
-                const prefix = r.item.substring(0, 2);
-                if (prefixes.includes(prefix) && r.item.indexOf(slug) !== -1) {
-                    return true;
-                }
-                
-                return false;
-            })
-
-            // Take the top 10 results, and add their links
-            data.related_words = results.slice(0, 10).map(result => {
-                result.href = `/search/uz?word=${result.item}`;
-                return result;
-            })
+        // For fuzzy searching verbs, we don't want the "-"
+        if (slug.includes("-")) {
+            slug = slug.replace("-", "");
         }
-        
+
+        // Fuzzy search for similar words
+        let results = fuse.search(slug);
+        results = results.filter(r => {
+            // Allow the fuzzy search if the word starts with the same letters
+            // This is useful as prefixes are quite rare in Uzbek
+            if (r.item.indexOf(slug) == 0 && r.item !== word) {
+                return true;
+            }
+            
+            // Just in case, check whether we have a prefix, if so we keep it
+            const prefix = r.item.substring(0, 2);
+            if (prefixes.includes(prefix) && r.item.indexOf(slug) !== -1) {
+                return true;
+            }
+            
+            return false;
+        })
+
+        // Take the top 10 results, and add their links
+		data.related_words = results.slice(0, 10).map(result => {
+			result.href = `/search/uz?word=${result.item}`;
+			return result;
+		})
 
         // Debugging
         // console.log(data);
