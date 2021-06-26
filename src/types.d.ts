@@ -22,6 +22,11 @@ type WordInfo = {
         uzbek: string,
         english: string,
     }[],
+    related_words: {
+        item: string,
+        refIndex: number,
+        href: string,
+    }[],
     section: string,
 }
 
