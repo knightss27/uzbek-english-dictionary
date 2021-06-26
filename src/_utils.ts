@@ -20,6 +20,18 @@ const wordSchema = new Schema({
         refIndex: Number,
         href: String,
     }],
+    ctild_data: {
+        uzbek_word: String,
+        part_of_speech: String,
+        english_definitions: [{
+            definition: String,
+            examples: [{
+                uzbek: String,
+                english: String,
+            }]
+        }],
+    },
+    dne_in_ctild: Boolean,
 }, { collection: 'words' });
 export const Word = mongoose.model('Word', wordSchema);
 
@@ -31,8 +43,8 @@ export const connectToDB = async () => {
     }
 
     const db = await mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log(db);
+    // console.log(db);
     connection.isConnected = db.connections[0].readyState;
-    console.log(connection);
+    // console.log(connection);
     return;
 }

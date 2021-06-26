@@ -96,7 +96,7 @@
 	<div>
 		{#each results as result, i}
 			{#if i < 10}
-			<a class="result" on:click={() => {results = []}} href={`/search/uz?word=${result.item.uzbek_word}`} id="result-{i+1}">{result.item.uzbek_word}</a>
+			<a rel="prefetch" class="result" on:click={() => {results = []}} href={`/search/uz?word=${result.item.uzbek_word}`} id="result-{i+1}">{result.item.uzbek_word}</a>
 			{/if}
 		{/each}
 		<span>
