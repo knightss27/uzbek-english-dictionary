@@ -43,7 +43,7 @@
 			console.log("fuzzy searching for: " + search_term);
 			cursor = 0;
 
-			let normalized_term = search_term.toLowerCase();
+			let normalized_term = search_term.toLowerCase().replace("’", "'");
 
 			// console.log(normalized_term);
 
@@ -79,7 +79,7 @@
 
     const handleSearchButton = () => {
         if (search_term) {
-            window.location.href = `/search/uz?word=${search_term.toLowerCase()}`
+            window.location.href = `/search/uz?word=${search_term.toLowerCase().replace("’", "'")}`
         }
     }
 </script>
