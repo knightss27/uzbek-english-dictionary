@@ -20,6 +20,7 @@
 	export let data: SearchResult;
 	export let not_found: boolean;
 	import Search from "../../../components/Search.svelte";
+	import SvelteSeo from "svelte-seo";
 
 	// console.log(data, not_found);
 
@@ -45,9 +46,24 @@
 	]
 </script>
 
-<svelte:head>
-	<title>Uzbek-English Dictionary</title>
-</svelte:head>
+<SvelteSeo
+  title="{data.word} - Uzbek-English Composite Dictionary | O'zbekcha-inglizcha Lug'at"
+  description="Uzbek-English Definitions | O'zbekcha-inglizcha ta'riflar"
+  openGraph={{
+    title: `${data.word} - Uzbek-English Composite Dictionary | O'zbekcha-inglizcha Lug'at`,
+    description: "Uzbek-English Definitions | O'zbekcha-inglizcha ta'riflar",
+    url: `https://www.uzbek-dictionary.org/search/uz?word=${data.word}`,
+    type: "website",
+    images: [
+      {
+        url: "https://www.uzbek-dictionary.org/logo-512.png",
+        width: 512,
+		height: 512,
+		alt: "UECD Logo"
+      },
+    ],
+  }}
+/>
 
 <main>
 	<Search search_term={data.word} results={results} />
