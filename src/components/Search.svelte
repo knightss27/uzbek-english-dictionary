@@ -9,6 +9,7 @@
 		threshold: 0.2,
 		includeScore: true,
 		findAllMatches: true,
+		includeMatches: true,
 		keys: ['uzbek_word', 'cyrillic_suggestion'],
 		getFn: (obj, keys) => {
 			return keys.map(key => he.decode(obj[key]));
@@ -82,6 +83,10 @@
             window.location.href = `/search/uz?word=${search_term.toLowerCase().replace("’", "'")}`
         }
     }
+
+	const chooseResultForm = (result) => {
+		return result.matches[0].value;
+	}
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
@@ -96,7 +101,7 @@
 	<div>
 		{#each results as result, i}
 			{#if i < 10}
-			<a rel="prefetch" class="result" on:click={() => {results = []}} href={`/search/uz?word=${result.item.uzbek_word}`} id="result-{i+1}">{result.item.uzbek_word}</a>
+			<a rel="prefetch" class="result" on:click={() => {results = []}} href={`/search/uz?word=${result.item.uzbek_word}`} id="result-{i+1}">{chooseResultForm(result)}</a>
 			{/if}
 		{/each}
 		<span>
