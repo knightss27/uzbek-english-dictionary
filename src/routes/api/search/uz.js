@@ -5,6 +5,8 @@ import FormData from "form-data";
 import cheerio from "cheerio";
 import { Word, connectToDB } from "../../../_utils";
 
+// https://savodxon.uz/api/get_definition
+
 // Possible prefixes
 const prefixes = ["ba", "be", "fi"];
 const options = Object.keys(dictionary);

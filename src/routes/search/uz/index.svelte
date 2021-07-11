@@ -22,11 +22,8 @@
 	import Search from "../../../components/Search.svelte";
 	import SvelteSeo from "svelte-seo";
 
-	// console.log(data, not_found);
-
 	let results = [];
 
-	$: result = data.word_info;
 	$: if (data) {
 		results = [];
 	}
@@ -47,7 +44,7 @@
 </script>
 
 <SvelteSeo
-  title="{data.word} - Uzbek-English Composite Dictionary | O'zbekcha-inglizcha Lug'at"
+  title="{data.word} // Uzbek-English Composite Dictionary | O'zbekcha-inglizcha Lug'at"
   description="Uzbek-English Definitions | O'zbekcha-inglizcha ta'riflar"
   openGraph={{
     title: `${data.word} - Uzbek-English Composite Dictionary | O'zbekcha-inglizcha Lug'at`,
