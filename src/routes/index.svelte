@@ -8,15 +8,15 @@
   description="Uzbek-English Definitions | O'zbekcha-inglizcha ta'riflar"
   openGraph={{
     title: "Uzbek-English Composite Dictionary | O'zbekcha-inglizcha Lug'at",
-    description: "Uzbek-English Definitions | O'zbekcha-inglizcha ta'riflar",
+    description: "Uzbek-English Dictionary and English-Uzbek Dictionary that allows users to search for Uzbek definitions in both cyrillic and latin.  | O'zbekcha-inglizcha va inglizcha-o'zbekcha lug'at, o'zbekcha-inglizcha ma'nolar",
     url: "https://www.uzbek-dictionary.org/",
     type: "website",
     images: [
       {
         url: "https://www.uzbek-dictionary.org/logo-512.png",
         width: 512,
-		height: 512,
-		alt: "UECD Logo"
+        height: 512,
+		    alt: "UECD Logo"
       },
     ],
   }}
@@ -28,7 +28,6 @@
 
 <a hidden href="/search/uz">Uzbek Search</a>
 
-<!-- <a hidden href="/api/word/test.json">Uzbek Search API</a> -->
 <style>
   main {
     display: flex;
