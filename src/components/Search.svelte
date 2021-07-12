@@ -63,6 +63,7 @@
 		if (search_term && search_term.length > 1) {
 			console.log("fuzzy searching for: " + search_term);
 			cursor = 0;
+			const useEnglish = primaryLanguage == 'english';
 
 			let normalized_term = search_term.toLowerCase().replace("’", "'");
 			results = useEnglish ? fuseEnglish.search(normalized_term) : fuse.search(normalized_term);
@@ -107,32 +108,36 @@
 	}
 
 	let sessionStorage;
-
-	let useEnglish = false;
+	let primaryLanguage = 'uzbek';
 	onMount(() => {
 		sessionStorage = window.sessionStorage;
-		if (!sessionStorage.getItem('useEnglish')) {
-			sessionStorage.setItem('useEnglish', useEnglish);
+		if (sessionStorage.getItem('primaryLanguage') == null) {
+			sessionStorage.setItem('primaryLanguage', primaryLanguage);
 		} else {
-			useEnglish = sessionStorage.getItem('useEnglish');
+			primaryLanguage = sessionStorage.getItem('primaryLanguage');
 		}
 	})
+
+	const changeLanguage = () => {
+		primaryLanguage = primaryLanguage == 'english' ? 'uzbek' : 'english';
+		sessionStorage.setItem('primaryLanguage', primaryLanguage);
+	}
 </script>
 
 <svelte:window on:keydown={handleKeyDown} />
 
 <a class="title" href="/"><img src="logo.png" alt="Uzbek-English Dictionary" /></a>
 <main>
-	<p on:click={() => {useEnglish = !useEnglish; sessionStorage.setItem('useEnglish', useEnglish)}} >
-		{useEnglish ? "English" : "Uzbek"} 
+	<p on:click={changeLanguage} >
+		{primaryLanguage == 'english' ? "English" : "Uzbek"} 
 		<svg xmlns="http://www.w3.org/2000/svg" height="15px" viewBox="0 0 24 24" width="20px" fill="#000000"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/></svg> 
-		{useEnglish ? "Uzbek" : "English"} 
+		{primaryLanguage == 'english' ? "Uzbek" : "English"} 
 	</p>
 	<form on:submit|preventDefault={handleSearchButton}>
 		<input autocomplete="off" bind:value={search_term} on:input={handleSearch} placeholder="so'z" id="result-0" />
 		<button type="submit">search</button>
 	</form>
-	{#if useEnglish}
+	{#if primaryLanguage == 'english'}
 		<p>
 			*note: English-Uzbek translation is still a work in progress
 		</p>
