@@ -1,40 +1,46 @@
 <script>
-	import dictionary from "../routes/_dictionary";
 	import Fuse from "fuse.js";
 	import he from "he";
 	import { onMount } from "svelte";
 
-	const search_options = Object.values(dictionary);
-	let search_options_english = [];
-	search_options.forEach(option => {
-		for (const def of option.english_definitions) {
-			search_options_english.push({
-				definition: def.definition,
-				uzbek_word: option.uzbek_word,
-			})
-		}
-	})
+	let fuse;
+	let fuseEnglish;
 
-	const fuse = new Fuse(search_options, {
-		threshold: 0.2,
-		includeScore: true,
-		findAllMatches: true,
-		includeMatches: true,
-		keys: ['uzbek_word', 'cyrillic_suggestion'],
-		getFn: (obj, keys) => {
-			return keys.map(key => {
-				return he.decode(obj[key]);
-			});
-		}
-	})
+	const setupSearch = async () => {
+		let search_options = await fetch(`/api/list`);
+		search_options = await search_options.json();
 
-	const fuseEnglish = new Fuse(search_options_english, {
-		threshold: 0.2,
-		includeScore: true,
-		findAllMatches: true,
-		includeMatches: true,
-		keys: ['definition'],
-	})
+		let search_options_english = [];
+		search_options.forEach(option => {
+			for (const def of option.english_definitions) {
+				search_options_english.push({
+					definition: def.definition,
+					uzbek_word: option.uzbek_word,
+				})
+			}
+		})
+
+		fuse = new Fuse(search_options, {
+			threshold: 0.2,
+			includeScore: true,
+			findAllMatches: true,
+			includeMatches: true,
+			keys: ['uzbek_word', 'cyrillic_suggestion'],
+			getFn: (obj, keys) => {
+				return keys.map(key => {
+					return he.decode(obj[key]);
+				});
+			}
+		})
+
+		fuseEnglish = new Fuse(search_options_english, {
+			threshold: 0.2,
+			includeScore: true,
+			findAllMatches: true,
+			includeMatches: true,
+			keys: ['definition'],
+		})
+	}
 
 	// Persian prefixes (sometimes used)
 	const prefixes = ["ba", "be", "fi"];
@@ -110,6 +116,8 @@
 	let sessionStorage;
 	let primaryLanguage = 'uzbek';
 	onMount(() => {
+		setupSearch();
+
 		sessionStorage = window.sessionStorage;
 		if (sessionStorage.getItem('primaryLanguage') == null) {
 			sessionStorage.setItem('primaryLanguage', primaryLanguage);

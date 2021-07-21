@@ -31,6 +31,15 @@ type WordInfo = {
     ctild_data: CTILDInfo
 }
 
+type ShortenedWordInfo = {
+    uzbek_word: string,
+    cyrillic_suggestion: string,
+    english_definitions: {
+        definition: string,
+        form: string,
+    }[],
+}
+
 type CTILDInfo = {
     uzbek_word: string,
     part_of_speech: string,
