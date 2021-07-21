@@ -139,7 +139,7 @@ export async function get(req, res, next) {
                 slug = slug.replace("-", "");
             }
             
-            const options = Word.find({});
+            const options = await Word.find({});
             const fuse = new Fuse(options, {
                 keys: ['uzbek_word']
             });
