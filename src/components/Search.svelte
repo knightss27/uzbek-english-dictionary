@@ -1,50 +1,5 @@
 <script>
-	import Fuse from "fuse.js";
-	import he from "he";
 	import { onMount } from "svelte";
-
-	let fuse;
-	let fuseEnglish;
-
-	const setupSearch = async () => {
-		let search_options = await fetch(`/api/list`);
-		search_options = await search_options.json();
-
-		let search_options_english = [];
-		search_options.forEach(option => {
-			for (const def of option.english_definitions) {
-				search_options_english.push({
-					definition: def.definition,
-					uzbek_word: option.uzbek_word,
-				})
-			}
-		})
-
-		fuse = new Fuse(search_options, {
-			threshold: 0.2,
-			includeScore: true,
-			findAllMatches: true,
-			includeMatches: true,
-			keys: ['uzbek_word', 'cyrillic_suggestion'],
-			getFn: (obj, keys) => {
-				return keys.map(key => {
-					return he.decode(obj[key]);
-				});
-			}
-		})
-
-		fuseEnglish = new Fuse(search_options_english, {
-			threshold: 0.2,
-			includeScore: true,
-			findAllMatches: true,
-			includeMatches: true,
-			keys: ['definition'],
-		})
-
-		if (search_term && search_term.length > 1) {
-			handleSearch();
-		}
-	}
 
 	// Persian prefixes (sometimes used)
 	const prefixes = ["ba", "be", "fi"];
@@ -69,36 +24,20 @@
 		}
 	}
 
-	const handleSearch = () => {
+	const handleSearch = async () => {
 		if (search_term && search_term.length > 1) {
 			console.log("fuzzy searching for: " + search_term);
 			cursor = 0;
-			const useEnglish = primaryLanguage == 'english';
-
-			let normalized_term = search_term.toLowerCase().replace("’", "'");
-			results = useEnglish ? fuseEnglish.search(normalized_term) : fuse.search(normalized_term);
-
-			if (!useEnglish) {
-				results = results.filter(r => {
-					if (r.item.uzbek_word.indexOf(normalized_term) == 0
-					|| (r.item.cyrillic_suggestion && he.decode(r.item.cyrillic_suggestion).indexOf(normalized_term) == 0)) {
-						return true;
-					}
-
-					const prefix = r.item.uzbek_word.substring(0, 2);
-					if (prefixes.includes(prefix)) {
-						return true;
-					}
-
-					return false;
-				})
-			}
 			
+			let fuzzy_results = await fetch(`/api/search?word=${search_term}&lang=${primaryLanguage}`);
+			fuzzy_results = await fuzzy_results.json();
+
+			results = fuzzy_results.results;
 
 			if (results.length == 0) {
 				bottom_text = "No results."
 			} else {
-				bottom_text = `and ${results.length-10 > 0 ? results.length-10 : 0} more.`
+				bottom_text = `and ${fuzzy_results.nMatches-10 > 10 ? fuzzy_results.nMatches-10 : 0} more.`
 			}
 
 		} else if (search_term && search_term.length <= 1) {
@@ -120,7 +59,7 @@
 	let sessionStorage;
 	let primaryLanguage = 'uzbek';
 	onMount(() => {
-		setupSearch();
+		fetch(`/api/search?word=test`);
 
 		sessionStorage = window.sessionStorage;
 		if (sessionStorage.getItem('primaryLanguage') == null) {
