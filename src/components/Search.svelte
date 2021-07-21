@@ -40,6 +40,10 @@
 			includeMatches: true,
 			keys: ['definition'],
 		})
+
+		if (search_term && search_term.length > 1) {
+			handleSearch();
+		}
 	}
 
 	// Persian prefixes (sometimes used)
