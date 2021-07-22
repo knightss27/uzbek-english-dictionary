@@ -1,4 +1,3 @@
-import dictionary from '../../_dictionary.js';
 import Fuse from 'fuse.js';
 import axios from "axios";
 import FormData from "form-data";
@@ -9,8 +8,6 @@ import { Word, connectToDB } from "../../../_utils";
 
 // Possible prefixes
 const prefixes = ["ba", "be", "fi"];
-const options = Object.keys(dictionary);
-const fuse = new Fuse(options, {});
 
 export async function get(req, res, next) {
 	// Get the word from our url parameters
@@ -141,6 +138,11 @@ export async function get(req, res, next) {
             if (slug.includes("-")) {
                 slug = slug.replace("-", "");
             }
+            
+            const options = await Word.find({});
+            const fuse = new Fuse(options, {
+                keys: ['uzbek_word']
+            });
 
             // Fuzzy search for similar words
             let results = fuse.search(slug);
