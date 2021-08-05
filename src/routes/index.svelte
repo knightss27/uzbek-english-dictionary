@@ -5,7 +5,7 @@
 
 <SvelteSeo
   title="Uzbek-English Composite Dictionary | O'zbekcha-inglizcha Lug'at"
-  description="Uzbek-English Definitions | O'zbekcha-inglizcha ta'riflar"
+  description="Uzbek-English Dictionary and English-Uzbek Dictionary that allows users to search for Uzbek definitions in both cyrillic and latin.  | O'zbekcha-inglizcha va inglizcha-o'zbekcha lug'at, o'zbekcha-inglizcha ma'nolar"
   openGraph={{
     title: "Uzbek-English Composite Dictionary | O'zbekcha-inglizcha Lug'at",
     description: "Uzbek-English Dictionary and English-Uzbek Dictionary that allows users to search for Uzbek definitions in both cyrillic and latin.  | O'zbekcha-inglizcha va inglizcha-o'zbekcha lug'at, o'zbekcha-inglizcha ma'nolar",
